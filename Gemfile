@@ -23,10 +23,10 @@ gem 'jwt', "~> 2.1"
 gem 'sidekiq', "~> 5.1"
 # Redis client
 gem 'redis', "~> 4.0"
-# Finite state machine for ActiveRecord
-gem 'aasm', "~> 4.12"
 # Github API client
 gem "octokit", "~> 4.0"
+# Hashicorp Nomad API pass configuration with NOMAD_ADDR environment variable
+gem "nomad", "~> 0.1"
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 

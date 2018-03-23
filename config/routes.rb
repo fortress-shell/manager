@@ -4,9 +4,6 @@ Rails.application.routes.draw do
   end
   get 'sessions/index'
   namespace :v1 do
-    constraints subdomain: 'cloud' do
-
-    end
     constraints subdomain: 'www' do
 
     end
@@ -14,12 +11,6 @@ Rails.application.routes.draw do
 
     end
     constraints subdomain: 'support' do
-
-    end
-    constraints subdomain: 'rpc' do
-
-    end
-    constraints subdomain: 'admin' do
 
     end
     constraints subdomain: 'api' do

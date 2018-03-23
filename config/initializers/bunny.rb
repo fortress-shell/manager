@@ -1,23 +1,17 @@
 # RabbitMQ connection configuration
 
-class Bus
-  def self.publish(message = {})
-    x = channel.direct("messages")
-    # and simply publish message
-    x.publish(message.to_json)
+class MessageBus
+  @@channels = Hash.new
+
+  def self.publish(message)
+    exchange.publish(message.to_json)
   end
 
-  def self.channel
-    @channel ||= connection.create_channel
+  def self.exchange
+    @@channels[Thread.current] ||= connection.create_channel.direct('messages')
   end
 
-  # We are using default settings here
-  # The `Bunny.new(...)` is a place to
-  # put any specific RabbitMQ settings
-  # like host or port
   def self.connection
-    @connection ||= Bunny.new.tap do |c|
-      c.start
-    end
+    @connection ||= Bunny.new.tap &:start
   end
 end
