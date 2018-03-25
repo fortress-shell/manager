@@ -2,6 +2,8 @@ class Build < ApplicationRecord
   include AASM
 
   scope :running, -> { where(status: 'running') }
+  scope :queued, -> { where(status: 'queued') }
+  scope :ordered_queued, -> { queued.order(created_at: :asc) }
 
   belongs_to :project
   has_many :logs, dependent: :destroy

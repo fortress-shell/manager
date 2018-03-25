@@ -14,6 +14,9 @@ Rails.application.routes.draw do
           resources :logs, only: :index
         end
       end
+      resources :users, only: [] do
+        delete 'suicide', on: :collection
+      end
     end
     constraints subdomain: 'rpc' do
       resources :projects, only: [] do
