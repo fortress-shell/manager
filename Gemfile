@@ -15,6 +15,10 @@ gem 'puma', '~> 3.7'
 gem 'jbuilder', '~> 2.5'
 # RabbitMQ client
 gem 'bunny', "~> 2.9"
+# CORS policy
+gem 'rack-cors'
+# Commands
+gem 'simple_command'
 # Payment api
 gem 'stripe', "~> 3.9"
 # Json Web Token library
@@ -27,6 +31,8 @@ gem 'redis', "~> 4.0"
 gem "octokit", "~> 4.0"
 # Hashicorp Nomad API pass configuration with NOMAD_ADDR environment variable
 gem "nomad", "~> 0.1"
+# Modern HTTP client
+gem 'httparty'
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 

@@ -95,12 +95,14 @@ GEM
     nio4r (2.2.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
+    nomad (0.1.0)
     octokit (4.8.0)
       sawyer (~> 0.8.0, >= 0.5.3)
     pg (0.21.0)
     public_suffix (3.0.1)
     puma (3.11.0)
     rack (2.0.3)
+    rack-cors (1.0.2)
     rack-protection (2.0.0)
       rack
     rack-test (0.8.2)
@@ -142,6 +144,7 @@ GEM
       connection_pool (~> 2.2, >= 2.2.0)
       rack-protection (>= 1.5.0)
       redis (>= 3.3.4, < 5)
+    simple_command (0.0.9)
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -177,12 +180,15 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jwt (~> 2.1)
   listen (>= 3.0.5, < 3.2)
+  nomad (~> 0.1)
   octokit (~> 4.0)
   pg (~> 0.18)
   puma (~> 3.7)
+  rack-cors
   rails (~> 5.1.4)
   redis (~> 4.0)
   sidekiq (~> 5.1)
+  simple_command
   spring
   spring-watcher-listen (~> 2.0.0)
   stripe (~> 3.9)
