@@ -68,6 +68,8 @@ GEM
     ffi (1.9.18)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    httparty (0.16.1)
+      multi_xml (>= 0.5.2)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
     jbuilder (2.7.0)
@@ -88,6 +90,7 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.0)
     multi_json (1.12.2)
+    multi_xml (0.6.0)
     multipart-post (2.0.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -177,6 +180,7 @@ DEPENDENCIES
   bunny (~> 2.9)
   byebug
   capistrano-rails
+  httparty
   jbuilder (~> 2.5)
   jwt (~> 2.1)
   listen (>= 3.0.5, < 3.2)
