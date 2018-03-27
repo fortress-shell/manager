@@ -1,4 +1,4 @@
-class DestroySubscription
+class ViewSubscription
   prepend SimpleCommand
 
   def initialize(github_client)
@@ -6,16 +6,18 @@ class DestroySubscription
   end
 
   def call
-    @github_client.repositories.map do |repository|
-      subscribed = @github_client.hooks(repository[:id]).find { |hook|
-        hook[:name] = 'Fortress Shell'
-      }
-      repository[:subscribed] = subscribed
-      repository
+    @github_client.repositories(nil).each do |repo|
+      repo[:subscribed] = has_fortress_shell_hook repo[:id]
     end
   end
 
   private
+
+  def has_fortress_shell_hook(repository_id)
+    @github_client.hooks(repository_id)
+      .map(&:name)
+      .include?(Rails.application.secrets.project_name)
+  end
 
   def webhook_id
     project.webhook.id

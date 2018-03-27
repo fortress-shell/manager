@@ -1,11 +1,11 @@
 class FailBuild
   prepend SimpleCommand
 
-  def initialize()
+  def initialize(build)
+    @build = build
   end
 
   def call
+    @build.aasm.fire!(:fail)
   end
-
-  private
 end

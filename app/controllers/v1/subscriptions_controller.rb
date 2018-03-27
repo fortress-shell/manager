@@ -2,8 +2,6 @@ class V1::SubscriptionsController < ApplicationController
   before_action :set_github_client
   before_action :set_project, only: :destroy
 
-  DEPLOY_KEY = 'Fortress Shell'
-
   def index
     @command = ViewSubscriptions.call(github_client)
     if @command.failure?

@@ -1,14 +1,14 @@
 class WebhookEvent
    prepend SimpleCommand
-kkj
+
   def initialize(params, github_signature)
     @params = params
-    @repo_id = params[:repository][:id]
+    @repository_id = params[:repository][:id]
     @github_signature = github_signature
   end
 
   def call
-    @project = Project.find(@repo_id)
+    @project = Project.find(@repository_id)
     raw_payload = JSON.generate(@params)
     if verify_signature(raw_payload, @project.secret)
       create_build
@@ -21,13 +21,15 @@ kkj
   private
 
   def create_build
-    access_token = @project.user.access_token
-    github_client = Octokit::Client.new(access_token: access_token)
-    response = github_client.contents(@repo_id, :path => 'fortress.yml')
-    @build = @project.builds.create({
-      configuration: response['content'],
+    user = @project.user
+    github_client = Octokit::Client.new(access_token: user.access_token)
+    response = github_client.contents(@repository_id, :path => 'fortress.yml')
+    configuration = Base64.decode64(response['content'])
+    options = {
+      configuration: configuration,
       payload: @params
-    })
+    }
+    @build = @project.builds.create(options)
   end
 
   def start_build
@@ -35,12 +37,13 @@ kkj
       meta = {
         build_id: @build.id,
         ssh_key: @project.deploy_key,
-        username: repository['repository']['owner']['name'],
-        repository: repository['repository']['ssh_url'],
-        branch: params['ref'].split('/').last,
-        commit: params['after'],
+        username: repository[:repository][:owner][:name],
+        repository: repository[:repository][:ssh_url],
+        branch: params[:ref].split('/').last,
+        commit: params[:after],
       }
-      NomadTask.dispatch(@build.configuration, meta)
+      result = NomadTask.dispatch(@build.configuration, meta)
+      @build.update!(dispatched_job_id: result[:DispatchedJobID])
       @build.aasm.fire!(:run)
     else
       @build.aasm.fire!(:queue)

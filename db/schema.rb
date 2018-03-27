@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180325120743) do
+ActiveRecord::Schema.define(version: 20180224135238) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "builds", force: :cascade do |t|
     t.string "status"
+    t.jsonb "payload"
     t.text "configuration"
     t.bigint "project_id"
     t.datetime "created_at", null: false
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(version: 20180325120743) do
     t.bigint "user_id"
     t.bigint "repo_id"
     t.string "repo_url"
+    t.string "webhook_secret"
     t.jsonb "deploy_key"
     t.jsonb "webhook"
     t.datetime "created_at", null: false
@@ -48,6 +50,7 @@ ActiveRecord::Schema.define(version: 20180325120743) do
 
   create_table "users", force: :cascade do |t|
     t.string "access_token"
+    t.integer "github_user_id"
     t.integer "plan", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

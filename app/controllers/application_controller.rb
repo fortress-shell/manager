@@ -18,11 +18,20 @@ class ApplicationController < ActionController::API
 
   def set_csrf_cookie
     if protect_against_forgery?
-      cookies['XSRF-TOKEN'] = {
+      cookies[:_csrf_token] = {
         value: form_authenticity_token,
-        httponly: true,
         domain: '.fortress.sh'
       }
     end
   end
+
+  protected
+
+  def verified_request?
+    !protect_against_forgery? || request.get? || request.head? ||
+      cookies[:_csrf_token] == request.headers['X-CSRF-Token']
+  end
 end
+
+
+

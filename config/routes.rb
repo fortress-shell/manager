@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   end
   namespace :v1 do
     constraints subdomain: 'api' do
-      resources :sessions, only: [:index, :create, :destroy]
+      resources :sessions, only: [:index, :create] do
+        collection do
+          post 'logout'
+        end
+      end
       resources :projects, only: :index do
         resources :builds, only: :index do
           member do
@@ -30,8 +34,6 @@ Rails.application.routes.draw do
         end
       end
     end
-    constraints subdomain: 'webhooks' do
-      resources :webhooks, only: :create
-    end
+    resources :webhooks, only: [:create]
   end
 end

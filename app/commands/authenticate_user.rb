@@ -14,31 +14,40 @@ class AuthenticateUser
   attr_accessor :access_code
 
   def user
-    @user ||= generate_token
+    @user ||= generate_user
   end
 
-  def generate_token
-    token = generate_access_token
+  def generate_user
+    @access_token = generate_access_token[:access_token]
 
-    if user_exists = User.find_by_access_token(token[:access_token])
-      user_exists
+    if @access_token.nil?
+      errors.add(:token, 'Access code expired!')
+    elsif @user = User.find_by_github_user_id(github_user_id)
+      @user.update access_token: @access_token
+      @user
     else
-      create_user_using_access_token(token[:access_token])
+      create_user_using_access_token
     end
   end
 
-  def create_user_using_access_token(access_token)
-    client = Octokit::Client.new access_token: access_token
-    info = client.getUserInfo()
-    user = User.create! info
-    UserMailer.welcome_email.deliver_later(wait_until: 1.hours.from_now)
-    user
+  def create_user_using_access_token
+    User.create!({
+      access_token: @access_token,
+      github_user_id: github_user_id
+    })
+  end
+
+  def github_user_id
+    @user_id ||= octokit.user[:id]
+  end
+
+  def octokit
+    @client ||= Octokit::Client.new access_token: @access_token
   end
 
   def generate_access_token
-    Octokit.exchange_code_for_token(access_code,
-      Rails.application.secrets.github_app_id,
-      Rails.application.secrets.github_app_secret,
-      {:accept => 'application/json'})
+    Octokit.exchange_code_for_token(@access_code,
+         Rails.application.secrets.github_app_id,
+         Rails.application.secrets.github_app_secret)
   end
 end

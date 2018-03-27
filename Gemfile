@@ -33,6 +33,8 @@ gem "octokit", "~> 4.0"
 gem "nomad", "~> 0.1"
 # Modern HTTP client
 gem 'httparty'
+# FSM
+gem 'aasm'
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 

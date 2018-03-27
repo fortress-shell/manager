@@ -1,11 +1,11 @@
 class TimeoutBuild
   prepend SimpleCommand
 
-  def initialize()
+  def initialize(build)
+    @build = build
   end
 
   def call
+    @build.aasm.fire!(:timeout)
   end
-
-  private
 end

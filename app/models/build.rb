@@ -1,23 +1,22 @@
 class Build < ApplicationRecord
   include AASM
-
   scope :running, -> { where(status: 'running') }
   scope :queued, -> { where(status: 'queued') }
-  scope :ordered_queued, -> { queued.order(created_at: :asc) }
+  scope :sorted_queued, -> { queued.order(created_at: :asc) }
 
   belongs_to :project
   has_many :logs, dependent: :destroy
 
   aasm column: 'status' do
     state :created, :initial => true
-    state :queued,
-    state :running,
-    state :canceled,
-    state :timeouted,
-    state :maintananced,
-    state :successful,
-    state :failed,
-    state :empty_config,
+    state :queued
+    state :running
+    state :canceled
+    state :timeouted
+    state :maintananced
+    state :successful
+    state :failed
+    state :empty_config
     state :config_not_valid
 
     event :empty do
