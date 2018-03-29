@@ -1,15 +1,13 @@
 class JsonWebToken
-  SECRET = ENV.fetch('SECRET')
-
   def self.encode(payload, expires = 24.hours.from_now)
     payload[:exp] = expires.to_i
     {
-      token: JWT.encode(payload, SECRET),
+      token: JWT.encode(payload, Rails.application.secrets.secret_key),
       expires: expires
     }
   end
 
   def self.decode(token)
-    JWT.decode(token, SECRET)
+    JWT.decode(token, Rails.application.secrets.secret_key)
   end
 end

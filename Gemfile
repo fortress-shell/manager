@@ -16,7 +16,7 @@ gem 'jbuilder', '~> 2.5'
 # RabbitMQ client
 gem 'bunny', "~> 2.9"
 # CORS policy
-gem 'rack-cors'
+# gem 'rack-cors'
 # Commands
 gem 'simple_command'
 # Payment api

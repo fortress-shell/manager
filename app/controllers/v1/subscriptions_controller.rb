@@ -1,7 +1,4 @@
 class V1::SubscriptionsController < ApplicationController
-  before_action :set_github_client
-  before_action :set_project, only: :destroy
-
   def index
     @command = ViewSubscriptions.call(github_client)
     if @command.failure?
@@ -17,7 +14,7 @@ class V1::SubscriptionsController < ApplicationController
   end
 
   def destroy
-    @command = DestroySubscription.call(github_client, @project)
+    @command = DestroySubscription.call(github_client, project)
     if @command.failure?
       render status: :bad_request
     end
@@ -25,19 +22,16 @@ class V1::SubscriptionsController < ApplicationController
 
   private
 
-  def subscriptions_params
-    params.require(:repository).permit(:id)
-  end
-
   def github_repository_id
-    subscriptions_params[:id]
+    params.require(:id)
   end
 
-  def set_project
-    @project = Project.find_by_repository_id(github_repository_id)
+  def project
+    Project.find_by_repository_id(github_repository_id)
   end
 
   def github_client
-    Octokit::Client.new(access_token: @current_user.access_token)
+    Octokit::Client.new(access_token: @current_user.access_token,
+      per_page: 500)
   end
 end

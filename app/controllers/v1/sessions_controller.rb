@@ -9,7 +9,7 @@ class V1::SessionsController < ApplicationController
   end
 
   def logout
-    cookies.delete :token, domain: '.fortress.sh'
+    cookies.delete :token
     head :ok
   end
 
@@ -19,8 +19,7 @@ class V1::SessionsController < ApplicationController
       result = @command.result
       cookies[:token] = {
         value: result[:token],
-        expires: result[:expires],
-        domain: '.fortress.sh'
+        expires: result[:expires]
       }
       render status: :created
     else
@@ -31,10 +30,7 @@ class V1::SessionsController < ApplicationController
   private
 
   def set_index_csrf_cookie
-    cookies[:_csrf_token] = {
-      value: form_authenticity_token,
-      domain: '.fortress.sh'
-    }
+    cookies[:_csrf_token] = form_authenticity_token
   end
 
   def access_code

@@ -14,7 +14,7 @@ class AuthorizeUser
   attr_reader :cookies
 
   def user
-    return User.find(token_payload['user_id']) if token_payload
+    return User.find_by_id(token_payload['user_id']) if token_payload
     errors.add(:token, 'Invalid token')
   end
 

@@ -9,35 +9,36 @@ class CreateSubscription
   end
 
   def call
-    deploy_key = @github_client.add_deploy_key(
-      @github_repository_id,
-      Rails.application.secrets.project_name,
-      public_key
-    )
-    type = 'web'
-    config = {
-      url: 'http://webhoook.fortress.sh/webhook',
-      content_type: 'json',
-      secret: secret,
-    }
-    options = {
-      :events => ['push'],
-      :active => true
-    }
-    hook = @github_client.create_hook(
-      github_repository_id,
-      type,
-      config,
-      options
-    )
-    Project.create({
-      private_key: @key_pair.to_pem,
-      repo_id: github_repository_id,
-      hook: hook,
-      deploy_key: deploy_key,
-      webhook_secret: secret,
-    })
-    end
+    puts "fuck"
+    # deploy_key = @github_client.add_deploy_key(
+    #   @github_repository_id,
+    #   Rails.application.secrets.project_name,
+    #   public_key
+    # )
+    # type = 'web'
+    # config = {
+    #   url: 'http://webhoook.fortress.sh/webhook',
+    #   content_type: 'json',
+    #   secret: secret,
+    # }
+    # options = {
+    #   :events => ['push'],
+    #   :active => true
+    # }
+    # hook = @github_client.create_hook(
+    #   github_repository_id,
+    #   type,
+    #   config,
+    #   options
+    # )
+    # Project.create({
+    #   private_key: @key_pair.to_pem,
+    #   repo_id: github_repository_id,
+    #   hook: hook,
+    #   deploy_key: deploy_key,
+    #   webhook_secret: secret,
+    # })
+    # end
   end
 
   private

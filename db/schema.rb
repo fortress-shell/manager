@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20180224135238) do
   create_table "builds", force: :cascade do |t|
     t.string "status"
     t.jsonb "payload"
+    t.string "dispatched_job_id"
     t.text "configuration"
     t.bigint "project_id"
     t.datetime "created_at", null: false
@@ -38,8 +39,8 @@ ActiveRecord::Schema.define(version: 20180224135238) do
 
   create_table "projects", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "repo_id"
-    t.string "repo_url"
+    t.bigint "repository_id"
+    t.string "repository_url"
     t.string "webhook_secret"
     t.jsonb "deploy_key"
     t.jsonb "webhook"

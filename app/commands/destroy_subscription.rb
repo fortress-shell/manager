@@ -8,9 +8,10 @@ class DestroySubscription
   end
 
   def call
-    @github_client.remove_hook(github_repository_id, webhook_id)
-    @github_client.remove_deploy_key(github_repository_id, deploy_key_id)
-    @project.destroy
+    puts "fuck'"
+    # @github_client.remove_hook(github_repository_id, webhook_id)
+    # @github_client.remove_deploy_key(github_repository_id, deploy_key_id)
+    # @project.destroy
   end
 
   private

@@ -1,4 +1,4 @@
-class ViewSubscription
+class ViewSubscriptions
   prepend SimpleCommand
 
   def initialize(github_client)
@@ -6,8 +6,12 @@ class ViewSubscription
   end
 
   def call
-    @github_client.repositories(nil).each do |repo|
-      repo[:subscribed] = has_fortress_shell_hook repo[:id]
+    repositories = @github_client.repositories(nil)
+    repository_ids = repositories.map { |r| r[:id] }
+    projects = Project.where(repository_id: repository_ids).ids
+    puts 'blabla', repositories.size
+    repositories.each do |r|
+      r[:subscribed] = projects.include? r[:id]
     end
   end
 
