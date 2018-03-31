@@ -39,9 +39,12 @@ ActiveRecord::Schema.define(version: 20180224135238) do
 
   create_table "projects", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "repository_id"
-    t.string "repository_url"
     t.string "webhook_secret"
+    t.jsonb "repository"
+    t.text "private_key"
+    t.bigint "repository_id"
+    t.string "repository_owner"
+    t.string "repository_name"
     t.jsonb "deploy_key"
     t.jsonb "webhook"
     t.datetime "created_at", null: false

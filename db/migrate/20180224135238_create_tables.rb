@@ -10,9 +10,12 @@ class CreateTables < ActiveRecord::Migration[5.1]
 
     create_table :projects do |t|
       t.belongs_to :user, index: true
-      t.bigint :repository_id
-      t.string :repository_url
       t.string :webhook_secret
+      t.jsonb :repository
+      t.text :private_key
+      t.bigint :repository_id
+      t.string :repository_owner
+      t.string :repository_name
       t.jsonb :deploy_key
       t.jsonb :webhook
 

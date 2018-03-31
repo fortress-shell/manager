@@ -10,7 +10,7 @@ Rails.application.routes.draw do
         end
       end
       resources :subscriptions, only: [:index, :create, :destroy]
-      resources :projects, only: :index do
+      resources :projects, only: [:index, :show] do
         resources :builds, only: :index do
           member do
             patch 'restart'

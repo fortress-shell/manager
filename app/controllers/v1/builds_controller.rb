@@ -1,7 +1,8 @@
 class V1::BuildsController < ApplicationController
   before_action :set_current_user_build, only: [:restart, :cancel]
-  before_action :set_build, except: [:show, :restart, :cancel]
-  skip_before_action :authorize_user, except: [:show, :restart, :cancel]
+  not_for_rpc = [:index, :show, :restart, :cancel]
+  before_action :set_build, except: not_for_rpc
+  skip_before_action :authorize_user, except: not_for_rpc
 
   def index
     @builds = @current_user.builds.find_by_project_id project_id
@@ -64,6 +65,6 @@ class V1::BuildsController < ApplicationController
   end
 
   def project_id
-    builds_params[:project_id]
+    params.permit(:project_id)
   end
 end

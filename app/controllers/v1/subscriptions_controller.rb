@@ -7,7 +7,9 @@ class V1::SubscriptionsController < ApplicationController
   end
 
   def create
-    @command = CreateSubscription.call(github_client, github_repository_id)
+    @command = CreateSubscription.call(github_client,
+      @current_user,
+      github_repository_id)
     if @command.failure?
       render status: :bad_request
     end
@@ -27,7 +29,7 @@ class V1::SubscriptionsController < ApplicationController
   end
 
   def project
-    Project.find_by_repository_id(github_repository_id)
+    @current_user.projects.find_by_repository_id(github_repository_id)
   end
 
   def github_client

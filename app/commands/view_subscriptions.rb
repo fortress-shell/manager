@@ -8,7 +8,10 @@ class ViewSubscriptions
   def call
     repositories = @github_client.repositories(nil)
     repository_ids = repositories.map { |r| r[:id] }
-    projects = Project.where(repository_id: repository_ids).ids
+    puts 'blabla', repository_ids
+    projects = Project.where(repository_id: repository_ids)
+      .map {|o| o.repository_id}
+    puts 'blabla', projects
     puts 'blabla', repositories.size
     repositories.each do |r|
       r[:subscribed] = projects.include? r[:id]
