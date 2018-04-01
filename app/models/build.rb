@@ -26,7 +26,8 @@ class Build < ApplicationRecord
   end
 
   aasm column: 'status' do
-    state :created, :initial => true
+    state :created, initial: true
+    state :scheduled
     state :queued
     state :running
     state :canceled
@@ -39,43 +40,47 @@ class Build < ApplicationRecord
     state :skiped
 
     event :empty do
-      transitions :from => :created, :to => :empty_config
+      transitions from: :created, to: :empty_config
+    end
+
+    event :schedule do
+      transitions from: [:created, :queued], to: :scheduled
     end
 
     event :skip do
-      transitions :from => :created, :to => :skiped
+      transitions from: :created, to: :skiped
     end
 
     event :not_valid do
-      transitions :from => :created, :to => :config_not_valid
+      transitions from: :created, to: :config_not_valid
     end
 
     event :queue do
-      transitions :from => :created, :to => :queued
+      transitions from: :created, to: :queued
     end
 
     event :run do
-      transitions :from => [:created, :queued], :to => :running
+      transitions from: [:created, :queued], to: :running
     end
 
     event :cancel do
-      transitions :from => [:created, :queued, :running], :to => :canceled
+      transitions from: [:created, :queued, :running], to: :canceled
     end
 
     event :timeout do
-      transitions :from => [:running], :to => :running
+      transitions from: [:running], to: :running
     end
 
     event :success do
-      transitions :from => [:running], :to => :successful
+      transitions from: [:running], to: :successful
     end
 
     event :fail do
-      transitions :from => [:running], :to => :failed
+      transitions from: [:running], to: :failed
     end
 
     event :maintenance do
-      transitions :from => [:running], :to => :maintananced
+      transitions from: [:running], to: :maintananced
     end
   end
 end
