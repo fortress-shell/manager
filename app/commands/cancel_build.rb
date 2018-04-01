@@ -6,6 +6,6 @@ class CancelBuild
   end
 
   def call
-    @build.aasm.fire!(:cancel)
+
   end
 end

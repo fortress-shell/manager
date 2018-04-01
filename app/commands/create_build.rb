@@ -14,26 +14,26 @@ class CreateBuild
       configuration: configuration,
       payload: @payload
     }
-    # spec = YAML.dump(configuration)
-    # filter = spec['general']['branches']
-    # @build = @project.builds.create(options)
-    # if filter.include? @payload[:ref].split('/').last
-    #   @build.skip!
-    # elsif @user.plan.equal? @project.builds.running.count
-    #   # meta = {
-    #   #   build_id: @build.id,
-    #   #   ssh_key: @project.deploy_key,
-    #   #   username: @payload[:repository][:owner][:login],
-    #   #   repository: @payload[:repository][:ssh_url],
-    #   #   branch: @payload[:ref].split('/').last,
-    #   #   commit: @payload[:after],
-    #   # }
-    #   # result = NomadTask.dispatch(fortress_yml, meta)
-    #   # @build.update!(dispatched_job_id: result[:DispatchedJobID])
-    # else
-    #   @build.queue!
-    # end
-    MessageBus.notify(options)
+    spec = YAML.dump(configuration)
+    filter = spec['general']['branches']
+    @build = @project.builds.create(options)
+    MessageBus.notify({
+
+      })
+    if filter.include? @payload[:ref].split('/').last
+      @build.skip!
+      MessageBus.notify({
+
+        })
+    elsif @user.plan.equal? @project.builds.running.count
+      @build.dispatch_to_nomad
+      MessageBus.notify({
+        })
+    else
+      @build.queue!
+      MessageBus.notify({
+        })
+    end
   end
 
   private

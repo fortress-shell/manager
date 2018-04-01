@@ -6,6 +6,24 @@ class Build < ApplicationRecord
 
   belongs_to :project
   has_many :logs, dependent: :destroy
+  has_one :user, through: :projects
+
+  def cancel_nomad_job
+    NomadTask.stop(self.dispatched_job_id)
+  end
+
+  def dispatch_to_nomad
+    meta = {
+      build_id: self.id,
+      ssh_key: self.project.deploy_key,
+      username: self.payload[:repository][:owner][:login],
+      repository: self.payload[:repository][:ssh_url],
+      branch: self.payload[:ref].split('/').last,
+      commit: self.payload[:after],
+    }
+    result = NomadTask.dispatch(Base64.encode(self.configuration), meta)
+    self.update!(dispatched_job_id: result[:DispatchedJobID])
+  end
 
   aasm column: 'status' do
     state :created, :initial => true

@@ -3,4 +3,3 @@ if @builds
 else
   json.builds []
 end
-
