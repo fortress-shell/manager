@@ -3,12 +3,16 @@
 class MessageBus
   @@channels = Hash.new
 
-  def self.publish(message)
-    exchange.publish(message.to_json)
+  def self.notify(message)
+    channel.publish(message.to_json)
   end
 
-  def self.exchange
-    @@channels[Thread.current] ||= connection.create_channel.direct('messages')
+  def self.channel
+    @@channels[Thread.current] ||= create_channel
+  end
+
+  def self.create_channel
+    connection.create_channel.fanout('messages')
   end
 
   def self.connection

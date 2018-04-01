@@ -1,6 +1,6 @@
 class Build < ApplicationRecord
   include AASM
-  scope :running, -> { where(status: 'running') }
+  scope :running, -> { where(status: ['running', 'queued', 'created']) }
   scope :queued, -> { where(status: 'queued') }
   scope :sorted_queued, -> { queued.order(created_at: :asc) }
 
@@ -18,9 +18,14 @@ class Build < ApplicationRecord
     state :failed
     state :empty_config
     state :config_not_valid
+    state :skiped
 
     event :empty do
       transitions :from => :created, :to => :empty_config
+    end
+
+    event :skip do
+      transitions :from => :created, :to => :skiped
     end
 
     event :not_valid do

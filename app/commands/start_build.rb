@@ -1,4 +1,4 @@
-class RestartBuild
+class StartBuild
   prepend SimpleCommand
 
   def initialize()

@@ -37,6 +37,8 @@ gem 'httparty'
 gem 'aasm'
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
+# Github webhook processor
+gem 'github_webhook', '~> 1.1'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -1,70 +1,78 @@
 class V1::BuildsController < ApplicationController
-  before_action :set_current_user_build, only: [:restart, :cancel]
   not_for_rpc = [:index, :show, :restart, :cancel]
-  before_action :set_build, except: not_for_rpc
   skip_before_action :authorize_user, except: not_for_rpc
+  before_action :set_rpc_build, except: not_for_rpc
 
   def index
     @builds = @current_user.builds.find_by_project_id project_id
   end
 
+  def show
+    @build = @current_user.builds.find(params.require(:id))
+  end
+
   def restart
-    @command = RestartBuild.call(@current_user_build)
+    @command = RestartBuild.call(current_user_build)
     if @command.failure?
       render status: :bad_request
     end
   end
 
   def cancel
-    @command = CancelBuild.call(@current_user_build)
+    @command = CancelBuild.call(current_user_build)
     if @command.failure?
       render status: :bad_request
     end
+  end
+
+  # rpc calls
+  def stoped
+    @build.cancel!
+  end
+
+  def start
+    @build.run!
   end
 
   def timeout
-    @command = TimeoutBuild.call(@build)
-    if @command.failure?
-      render status: :bad_request
-    end
+    @build.timeout!
   end
 
   def fail
-    @command = FailBuild.call(@build)
-    if @command.failure?
-      render status: :bad_request
-    end
+    @build.fail!
   end
 
   def success
-    @command = SuccessBuild.call(@build)
-    if @command.failure?
-      render status: :bad_request
-    end
+    @build.success!
   end
 
-  def error
-    @command = ErrorBuild.call(@build)
-    if @command.failure?
-      render status: :bad_request
-    end
+  def maintenance
+    @build.maintenance!
   end
 
   private
 
-  def set_build
-    @build = Build.find(builds_params)
+  def set_rpc_build
+    @build = Build.find_by_dispatched_job_id dispatched_job_id
   end
 
-  def set_current_user_build
-    @current_user_build = @current_user.builds.find(builds_params)
+  def dispatched_job_id
+    rpc_build_params[:dispatched_job_id]
   end
 
-  def builds_params
-    params.require(:build).permit(:id, :project_id)
+  def rpc_build_params
+    params.require(:event).permit(:dispatched_job_id)
+  end
+
+  def current_user_build
+    @current_user.builds.find(build_params)
+  end
+
+  def build_params
+    params.permit(:id, :project_id)
   end
 
   def project_id
-    params.permit(:project_id)
+    params.require(:project_id)
   end
 end

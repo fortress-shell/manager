@@ -18,7 +18,7 @@ class CreateSubscription
       public_key
     )
     config = {
-      url: 'http://webhoook.fortress.sh/webhook',
+      url: 'http://a3096db2.ngrok.io/v1/webhooks',
       content_type: 'json',
       secret: @secret,
     }
