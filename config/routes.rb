@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   defaults format: 'json' do
     namespace :v1 do
+
       resources :webhooks, only: [:create]
 
       resources :subscriptions, only: [:index, :create, :destroy]
@@ -30,7 +31,7 @@ Rails.application.routes.draw do
       end
 
       constraints subdomain: 'rpc' do
-        resources :builds, only: [] do
+        resources :results, only: [] do
           collection do
             patch 'timeout'
             patch 'start'

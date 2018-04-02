@@ -8,18 +8,11 @@ class RestartBuild
   end
 
   def call
+    # create new build + check qos + update state to
+    # queued and dispatch task to nomad if qos not limited
     @build = @project.builds.create(configuration: @build.configuration,
         payload: @build.payload)
-    elsif @user.plan.equal? @project.builds.running.count
-      @build.dispatch_to_nomad
-      MessageBus.notify({
-        })
-    else
-      @build.queue!
-      MessageBus.notify({
-        })
-    end
+    @build.schedule!
+    DispatchToNomad.call(@build)
   end
-
-  private
 end

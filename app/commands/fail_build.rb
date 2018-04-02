@@ -6,6 +6,6 @@ class FailBuild
   end
 
   def call
-    @build.aasm.fire!(:fail)
+    @build.fail!
   end
 end

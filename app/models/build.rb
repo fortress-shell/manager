@@ -8,27 +8,9 @@ class Build < ApplicationRecord
   has_many :logs, dependent: :destroy
   has_one :user, through: :projects
 
-  def cancel_nomad_job
-    NomadTask.stop(self.dispatched_job_id)
-  end
-
-  def dispatch_to_nomad
-    meta = {
-      build_id: self.id,
-      ssh_key: self.project.deploy_key,
-      username: self.payload[:repository][:owner][:login],
-      repository: self.payload[:repository][:ssh_url],
-      branch: self.payload[:ref].split('/').last,
-      commit: self.payload[:after],
-    }
-    result = NomadTask.dispatch(Base64.encode(self.configuration), meta)
-    self.update!(dispatched_job_id: result[:DispatchedJobID])
-  end
-
   aasm column: 'status' do
     state :created, initial: true
     state :scheduled
-    state :queued
     state :running
     state :canceled
     state :timeouted
@@ -44,7 +26,7 @@ class Build < ApplicationRecord
     end
 
     event :schedule do
-      transitions from: [:created, :queued], to: :scheduled
+      transitions from: :created, to: :scheduled
     end
 
     event :skip do
@@ -55,16 +37,12 @@ class Build < ApplicationRecord
       transitions from: :created, to: :config_not_valid
     end
 
-    event :queue do
-      transitions from: :created, to: :queued
-    end
-
     event :run do
-      transitions from: [:created, :queued], to: :running
+      transitions from: [:scheduled], to: :running
     end
 
     event :cancel do
-      transitions from: [:created, :queued, :running], to: :canceled
+      transitions from: [:scheduled, :running], to: :canceled
     end
 
     event :timeout do

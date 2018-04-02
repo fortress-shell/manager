@@ -1,1 +1,5 @@
-json.build @build
+if @restart_build.success?
+  json.build @build
+else
+  json.build nil
+end

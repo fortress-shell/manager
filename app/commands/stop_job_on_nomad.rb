@@ -1,4 +1,4 @@
-class StartBuild
+class StopJobOnNomad
   prepend SimpleCommand
 
   def initialize(build)
@@ -6,6 +6,6 @@ class StartBuild
   end
 
   def call
-    @build.run!
+    NomadTask.stop(@build.dispatched_job_id)
   end
 end

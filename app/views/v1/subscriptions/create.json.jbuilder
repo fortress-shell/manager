@@ -1,7 +1,7 @@
-if @command.success?
+if @create_subscription.success?
   json.success true
   json.errors nil
 else
   json.success false
-  json.errors @command.errors
+  json.errors @create_subscription.errors
 end

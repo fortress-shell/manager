@@ -1,4 +1,4 @@
-class ErrorBuild
+class StopBuild
   prepend SimpleCommand
 
   def initialize(build)
@@ -6,6 +6,6 @@ class ErrorBuild
   end
 
   def call
-    @build.aasm.fire!(:error)
+    @build.cancel!
   end
 end

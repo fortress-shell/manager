@@ -1,5 +1,5 @@
-if @command.success?
-  json.subscriptions @command.result.map(&:to_h)
+if @view_subscriptions.success?
+  json.subscriptions @view_subscriptions.result.map(&:to_h)
 else
-  json.errors @command.errors
+  json.errors @view_subscriptions.errors
 end

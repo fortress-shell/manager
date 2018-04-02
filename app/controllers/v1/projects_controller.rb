@@ -4,10 +4,6 @@ class V1::ProjectsController < ApplicationController
   end
 
   def show
-    @project = @current_user.projects.find(project_params)
-  end
-
-  def project_params
-    params.require(:id)
+    @project = @current_user.projects.find(params[:id])
   end
 end

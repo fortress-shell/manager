@@ -1,7 +1,7 @@
-if @command.success?
+if @authenticate_user.success?
   json.success true
   json.errors []
 else
   json.success false
-  json.errors @command.errors
+  json.errors @authenticate_user.errors
 end

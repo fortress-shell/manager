@@ -29,11 +29,10 @@ ActiveRecord::Schema.define(version: 20180224135238) do
   create_table "logs", force: :cascade do |t|
     t.integer "position"
     t.text "content"
-    t.string "stage"
-    t.string "command"
     t.bigint "build_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["build_id", "position"], name: "index_logs_on_build_id_and_position", unique: true
     t.index ["build_id"], name: "index_logs_on_build_id"
   end
 
@@ -55,7 +54,6 @@ ActiveRecord::Schema.define(version: 20180224135238) do
   create_table "users", force: :cascade do |t|
     t.string "access_token"
     t.integer "github_user_id"
-    t.integer "plan", default: 1
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

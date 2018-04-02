@@ -5,6 +5,7 @@ class CreateBuild
     @project = project
     @user = project.user
     @payload = payload
+    @branch = payload[:ref].split('/').last
     @repository_id = project.repository_id
   end
 
@@ -15,24 +16,24 @@ class CreateBuild
       payload: @payload
     }
     spec = YAML.dump(configuration)
-    filter = spec['general']['branches']
+    filter = spec['general']['branches']['only']
     @build = @project.builds.create(options)
-    MessageBus.notify({
-
-      })
-    if filter.include? @payload[:ref].split('/').last
+    if filter.include? @branch
       @build.skip!
       MessageBus.notify({
-
-        })
-    elsif @user.plan.equal? @project.builds.running.count
-      @build.dispatch_to_nomad
-      MessageBus.notify({
-        })
+        user_id: @user.id,
+        project_id: @project.id,
+        status: @build.status,
+        branch: @branch
+      })
     else
-      @build.queue!
+      DispatchToNomad.call(@build)
       MessageBus.notify({
-        })
+        user_id: @user.id,
+        project_id: @project.id,
+        status: @build.status,
+        branch: @branch
+      })
     end
   end
 
@@ -40,7 +41,7 @@ class CreateBuild
 
   def fortress_yml
     @fortress_yml ||= github_client.contents(@repository_id,
-      :path => 'fortress.yml')['content']
+      path: 'fortress.yml')['content']
   end
 
   def github_client

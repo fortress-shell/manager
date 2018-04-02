@@ -6,22 +6,23 @@ class ApplicationController < ActionController::API
 
   protect_from_forgery with: :exception
 
-  before_action :authorize_user
+  before_action :authorize_user!
   after_action :set_csrf_cookie
 
   private
 
-  def authorize_user
-    @current_user = AuthorizeUser.call(cookies).result
+  def authorize_user!
+    @current_user = AuthorizeUser.call(cookies[:token]).result
     head :unauthorized unless @current_user
+  end
+
+  def set_csrf_token
+    cookies[:_csrf_token] = form_authenticity_token
   end
 
   def set_csrf_cookie
     if protect_against_forgery?
-      cookies[:_csrf_token] = {
-        value: form_authenticity_token,
-        domain: '.fortress.sh'
-      }
+      set_csrf_token
     end
   end
 

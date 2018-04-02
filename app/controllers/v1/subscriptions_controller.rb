@@ -1,35 +1,25 @@
 class V1::SubscriptionsController < ApplicationController
   def index
-    @command = ViewSubscriptions.call(github_client)
-    if @command.failure?
-      render status: :bad_request
-    end
+    @view_subscriptions = ViewSubscriptions.call(github_client)
+    render status: :bad_request if @view_subscriptions.failure?
   end
 
   def create
-    @command = CreateSubscription.call(github_client,
+    @create_subscription = CreateSubscription.call(github_client,
       @current_user,
-      github_repository_id)
-    if @command.failure?
-      render status: :bad_request
-    end
+      params[:id])
+    render status: :bad_request if @create_subscription.failure?
   end
 
   def destroy
-    @command = DestroySubscription.call(github_client, project)
-    if @command.failure?
-      render status: :bad_request
-    end
+    @destroy_subscription = DestroySubscription.call(github_client, project)
+    render status: :bad_request if @destroy_subscription.failure?
   end
 
   private
 
-  def github_repository_id
-    params.require(:id)
-  end
-
   def project
-    @current_user.projects.find_by_repository_id(github_repository_id)
+    @current_user.projects.find_by_repository_id(params[:id])
   end
 
   def github_client

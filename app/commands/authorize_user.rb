@@ -1,22 +1,16 @@
 class AuthorizeUser
   prepend SimpleCommand
 
-  def initialize(cookies = {})
-    @cookies = cookies
+  def initialize(token)
+    @token = token
   end
 
   def call
-    user
-  end
-
-  private
-
-  attr_reader :cookies
-
-  def user
     return User.find_by_id(token_payload['user_id']) if token_payload
     errors.add(:token, 'Invalid token')
   end
+
+  private
 
   def token_payload
     @payload ||= JsonWebToken.decode(token_from_cookies)[0]
@@ -25,9 +19,8 @@ class AuthorizeUser
   end
 
   def token_from_cookies
-    if cookies[:token].present?
-      puts cookies[:token]
-      return cookies[:token]
+    if @token.present?
+      @token
     else
       errors.add(:token, 'Missing token')
       nil

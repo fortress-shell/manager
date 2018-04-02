@@ -1,4 +1,4 @@
-class StartBuild
+class MaintenanceBuild
   prepend SimpleCommand
 
   def initialize(build)
@@ -6,6 +6,6 @@ class StartBuild
   end
 
   def call
-    @build.run!
+    @build.maintenance!
   end
 end

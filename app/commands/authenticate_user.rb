@@ -11,15 +11,12 @@ class AuthenticateUser
 
   private
 
-  attr_accessor :access_code
-
   def user
     @user ||= generate_user
   end
 
   def generate_user
     @access_token = generate_access_token[:access_token]
-
     if @access_token.nil?
       errors.add(:token, 'Access code expired!')
     elsif @user = User.find_by_github_user_id(github_user_id)

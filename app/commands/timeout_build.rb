@@ -6,6 +6,6 @@ class TimeoutBuild
   end
 
   def call
-    @build.aasm.fire!(:timeout)
+    @build.timeout!
   end
 end

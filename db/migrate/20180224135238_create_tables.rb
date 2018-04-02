@@ -3,7 +3,6 @@ class CreateTables < ActiveRecord::Migration[5.1]
     create_table :users do |t|
       t.string :access_token
       t.integer :github_user_id
-      t.integer :plan, default: 1
 
       t.timestamps
     end
@@ -36,12 +35,12 @@ class CreateTables < ActiveRecord::Migration[5.1]
     create_table :logs do |t|
       t.integer :position
       t.text :content
-      t.string :stage
-      t.string :command
 
       t.belongs_to :build, index: true
 
       t.timestamps
     end
+
+    add_index :logs, [:build_id, :position], unique: true
   end
 end

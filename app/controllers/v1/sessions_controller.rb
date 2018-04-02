@@ -1,11 +1,11 @@
 class V1::SessionsController < ApplicationController
-  skip_before_action :authorize_user, only: [:create, :index]
+  skip_before_action :authorize_user!, only: [:create, :index]
   skip_before_action :verify_authenticity_token, only: :index
-  after_action :set_index_csrf_cookie, only: :index
+  after_action :set_csrf_token, only: :index
 
   def index
-    @authenticated = AuthorizeUser.call(cookies).result.present?.to_json
-    render js: "window.SESSION_STATE = #{@authenticated}; "
+    authenticated = AuthorizeUser.call(cookies[:token]).result.present?
+    render js: "window.SESSION_STATE = #{authenticated.to_json}; "
   end
 
   def logout
@@ -14,9 +14,9 @@ class V1::SessionsController < ApplicationController
   end
 
   def create
-    @command = AuthenticateUser.call(access_code)
-    if @command.success?
-      result = @command.result
+    @authenticate_user = AuthenticateUser.call(params[:code])
+    if @authenticate_user.success?
+      result = @authenticate_user.result
       cookies[:token] = {
         value: result[:token],
         expires: result[:expires]
@@ -28,12 +28,4 @@ class V1::SessionsController < ApplicationController
   end
 
   private
-
-  def set_index_csrf_cookie
-    cookies[:_csrf_token] = form_authenticity_token
-  end
-
-  def access_code
-    params.require(:code)
-  end
 end

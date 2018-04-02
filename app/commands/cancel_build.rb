@@ -6,6 +6,6 @@ class CancelBuild
   end
 
   def call
-
+    StopJobOnNomad.call(@build).result
   end
 end
