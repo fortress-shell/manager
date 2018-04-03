@@ -30,7 +30,7 @@ Rails.application.routes.draw do
         delete 'suicide', on: :collection
       end
 
-      constraints subdomain: 'private' do
+      constraints subdomain: 'rpc' do
         resources :results, only: :create
       end
     end
