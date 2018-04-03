@@ -12,13 +12,8 @@ class V1::ResultsController < ApplicationController
     when 0 then SuccessBuild.call(@build)
     when 1 then FailBuild.call(@build)
     when 2 then TimeoutBuild.call(@build)
-    when 4 then MaintenanceBuild.call(@build)
-    else NopBuild.call
+    when 3...65535 then MaintenanceBuild.call(@build)
     end
-  end
-
-  def nomad_killed
-    @build_command = StopBuild.call(@build)
   end
 
   private

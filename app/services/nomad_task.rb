@@ -3,8 +3,8 @@ class NomadTask
 
   format :json
 
-  base_uri ENV.fetch('NOMAD_URL')
-  JOB_ID = ENV.fetch('DEFAULT_JOB_ID')
+  base_uri '192.168.2.3:4646'
+  JOB_ID = 'task'
 
   class << self
     def dispatch(payload, meta)

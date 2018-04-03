@@ -7,5 +7,6 @@ class SuccessBuild
 
   def call
     @build.success!
+    @build
   end
 end

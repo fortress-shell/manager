@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/fortress-shell/nomad_webhook
-  revision: a908d219119a776b0d8a74f2c2b328e79d5a89aa
+  revision: 006d3dfe9d0785046db086348a00551516e6d619
   specs:
     nomad_webhook (1.0.1)
       activesupport (>= 4)

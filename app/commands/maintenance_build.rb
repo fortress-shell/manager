@@ -7,5 +7,6 @@ class MaintenanceBuild
 
   def call
     @build.maintenance!
+    @build
   end
 end

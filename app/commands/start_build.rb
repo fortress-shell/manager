@@ -7,5 +7,6 @@ class StartBuild
 
   def call
     @build.run!
+    @build
   end
 end

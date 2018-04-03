@@ -2,20 +2,13 @@ class V1::BuildsController < ApplicationController
   before_action :set_build, except: :index
 
   def index
-    @builds = @current_user.builds.find_by_project_id(params[:project_id])
+    @builds = @current_user.builds.where(build_params)
   end
 
   def show
   end
 
-  def restart
-    @restart_build = RestartBuild.call(@build)
-    render status: :bad_request if @restart_build.failure?
-  end
-
-  def cancel
-    @cancel_build = CancelBuild.call(@build)
-    render status: :bad_request if @cancel_build.failure?
+  def logs
   end
 
   private

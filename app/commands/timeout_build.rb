@@ -7,5 +7,6 @@ class TimeoutBuild
 
   def call
     @build.timeout!
+    @build
   end
 end
