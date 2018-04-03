@@ -1,6 +1,6 @@
 class V1::LogsController < ApplicationController
   def index
-    @build = @current_user.builds.find_by(logs_params)
+    @build = @current_user.builds.find_by!(logs_params)
   end
 
   private

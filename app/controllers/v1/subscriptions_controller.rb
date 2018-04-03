@@ -19,7 +19,7 @@ class V1::SubscriptionsController < ApplicationController
   private
 
   def project
-    @current_user.projects.find_by_repository_id(params[:id])
+    @current_user.projects.find_by_repository_id!(params[:id])
   end
 
   def github_client

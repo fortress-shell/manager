@@ -30,17 +30,8 @@ Rails.application.routes.draw do
         delete 'suicide', on: :collection
       end
 
-      constraints subdomain: 'rpc' do
-        resources :results, only: [] do
-          collection do
-            patch 'timeout'
-            patch 'start'
-            patch 'fail'
-            patch 'stoped'
-            patch 'success'
-            patch 'maintenance'
-          end
-        end
+      constraints subdomain: 'private' do
+        resources :results, only: :create
       end
     end
   end

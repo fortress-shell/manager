@@ -21,7 +21,7 @@ class V1::BuildsController < ApplicationController
   private
 
   def set_build
-    @build = @current_user.builds.find_by(build_params)
+    @build = @current_user.builds.find_by!(build_params)
   end
 
   def build_params
