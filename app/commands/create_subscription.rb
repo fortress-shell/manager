@@ -18,7 +18,7 @@ class CreateSubscription
       public_key
     )
     config = {
-      url: 'http://2c623467.ngrok.io/v1/webhooks',
+      url: Rails.application.secrets.webhook,
       content_type: 'json',
       secret: @secret,
     }
