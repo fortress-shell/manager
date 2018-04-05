@@ -39,6 +39,8 @@ gem 'aasm'
 gem 'capistrano-rails', group: :development
 # Github webhook processor
 gem 'github_webhook', '~> 1.1'
+# Nomad webhook processor
+gem 'nomad_webhook', git: 'https://github.com/fortress-shell/nomad_webhook'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

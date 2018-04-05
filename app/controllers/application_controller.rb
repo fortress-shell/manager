@@ -2,8 +2,6 @@ class ApplicationController < ActionController::API
   include ActionController::Cookies
   include ActionController::RequestForgeryProtection
 
-  attr_reader :current_user
-
   protect_from_forgery with: :exception
 
   before_action :authorize_user!

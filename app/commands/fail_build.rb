@@ -7,5 +7,6 @@ class FailBuild
 
   def call
     @build.fail!
+    @build
   end
 end

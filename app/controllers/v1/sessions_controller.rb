@@ -26,6 +26,4 @@ class V1::SessionsController < ApplicationController
       render status: :unauthorized
     end
   end
-
-  private
 end

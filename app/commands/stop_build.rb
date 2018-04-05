@@ -7,5 +7,6 @@ class StopBuild
 
   def call
     @build.cancel!
+    @build
   end
 end
