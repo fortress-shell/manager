@@ -3,7 +3,7 @@ class NomadTask
 
   format :json
 
-  base_uri '192.168.2.3:4646'
+  base_uri '192.168.2.4:4646'
   JOB_ID = 'task'
 
   class << self

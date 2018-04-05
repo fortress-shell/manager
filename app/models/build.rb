@@ -7,8 +7,6 @@ class Build < ApplicationRecord
   has_many :logs, dependent: :destroy
   has_one :user, through: :project
 
-  validates :dispatched_job_id, presence: true
-
   aasm column: 'status' do
     state :created, initial: true
     state :scheduled

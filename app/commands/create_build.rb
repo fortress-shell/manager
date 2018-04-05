@@ -15,7 +15,7 @@ class CreateBuild
       configuration: plain_fortress_yml,
       payload: @payload
     }
-    @build = @project.builds.create(options)
+    @build = @project.builds.create!(options)
     DispatchToNomad.call(@build)
     MessageBus.notify({
       user_id: @user.id,
