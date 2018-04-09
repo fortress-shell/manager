@@ -1,7 +1,8 @@
 class V1::ResultsController < ApplicationController
+  include NomadWebhook::Processor
+
   skip_before_action :authorize_user!
   before_action :set_build
-  include NomadWebhook::Processor
 
   def nomad_started
     @build_command = StartBuild.call(@build)

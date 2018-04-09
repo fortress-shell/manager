@@ -1,11 +1,11 @@
 class Build < ApplicationRecord
   include AASM
 
-  scope :ordered_by_created_at, -> { order(created_at: :desc) }
-
   belongs_to :project
   has_many :logs, dependent: :destroy
   has_one :user, through: :project
+
+  scope :ordered_by_created_at, -> { order(created_at: :desc) }
 
   aasm column: 'status' do
     state :created, initial: true

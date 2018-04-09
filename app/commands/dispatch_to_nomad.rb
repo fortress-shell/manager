@@ -6,7 +6,6 @@ class DispatchToNomad
   end
 
   def call
-    puts @build.id
     meta = {
       build_id: @build.id.to_s,
       user_id: @build.user.id.to_s,
@@ -15,7 +14,6 @@ class DispatchToNomad
       branch: @build.payload['ref'].split('/').last,
       commit: @build.payload['after'],
     }
-    puts meta
     result = NomadTask.dispatch(@build.configuration, meta)
     @build.update!(dispatched_job_id: result['DispatchedJobID'])
     @build.schedule!

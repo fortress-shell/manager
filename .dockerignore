@@ -1,0 +1,8 @@
+.env
+.git
+.gitignore
+Dockerfile
+*.md
+*.log
+.keep
+test/

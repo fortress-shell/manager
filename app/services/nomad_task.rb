@@ -3,8 +3,8 @@ class NomadTask
 
   format :json
 
-  base_uri '192.168.2.4:4646'
-  JOB_ID = 'task'
+  base_uri Rails.application.secrets.nomad_url
+  NOMAD_JOB_ID = Rails.application.secrets.nomad_job_id
 
   class << self
     def dispatch(payload, meta)
@@ -17,7 +17,7 @@ class NomadTask
           'Content-Type' => 'application/json'
         }
       }
-      post "/v1/job/#{JOB_ID}/dispatch", @options
+      post "/v1/job/#{NOMAD_JOB_ID}/dispatch", @options
     end
 
     def stop(job_id)
