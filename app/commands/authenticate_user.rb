@@ -6,7 +6,7 @@ class AuthenticateUser
   end
 
   def call
-    JsonWebToken.encode(user_id: user.id) if user
+    JsonWebToken.generate_cookie(user_id: user.id) if user
   end
 
   private
