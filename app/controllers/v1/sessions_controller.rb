@@ -16,11 +16,7 @@ class V1::SessionsController < ApplicationController
   def create
     @authenticate_user = AuthenticateUser.call(params[:code])
     if @authenticate_user.success?
-      result = @authenticate_user.result
-      cookies[:token] = {
-        value: result[:token],
-        expires: result[:expires]
-      }
+      cookies[:token] = @authenticate_user.result
       render status: :created
     else
       render status: :unauthorized
