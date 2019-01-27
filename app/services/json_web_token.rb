@@ -2,7 +2,7 @@ class JsonWebToken
   def self.encode(payload, expires = 24.hours.from_now.utc)
     payload[:exp] = expires.to_i
     {
-      token: JWT.encode(payload, Rails.application.secrets.secret_key),
+      value: JWT.encode(payload, Rails.application.secrets.secret_key),
       expires: expires
     }
   end
